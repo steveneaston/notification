@@ -67,7 +67,7 @@ class Subscriber
      */
     public function onBoot(Notification $notification)
     {
-        $sessionPrefix = $this->getConfig()->get('notification::session_prefix');
+        $sessionPrefix = $this->getConfig()->get('notification.session_prefix');
 
         $containerNames = $this->getSession()->get($sessionPrefix.'containers', array());
 
@@ -108,7 +108,7 @@ class Subscriber
     {
         $this->flashContainerNames($notification);
 
-        $sessionKey  = $this->getConfig()->get('notification::session_prefix');
+        $sessionKey  = $this->getConfig()->get('notification.session_prefix');
         $sessionKey .= $notificationBag->getName();
         $sessionKey .= '_'.$this->generateMessageKey($message);
 
@@ -131,7 +131,7 @@ class Subscriber
             $names[] = $container->getName();
         }
 
-        $this->getSession()->flash($this->getConfig()->get('notification::session_prefix').'containers', $names);
+        $this->getSession()->flash($this->getConfig()->get('notification.session_prefix').'containers', $names);
     }
 
     /**

@@ -5,20 +5,12 @@ use Illuminate\Support\ServiceProvider;
 class NotificationServiceProvider extends ServiceProvider
 {
     /**
-     * Indicates if loading of the provider is deferred.
-     *
-     * @var bool
-     */
-    protected $defer = false;
-
-    /**
      * Bootstrap the application events.
      *
      * @return void
      */
     public function boot()
     {
-        $this->package('edvinaskrucas/notification');
         $this->app['events']->fire('notification.booted', $this->app['notification']);
     }
 
@@ -29,16 +21,16 @@ class NotificationServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app['config']->package('edvinaskrucas/notification', __DIR__.'/../config');
+        $this->app['config']->set('notification', require __DIR__.'/../config/config.php');
 
         $this->app['notification'] = $this->app->share(function ($app) {
                 $config = $app['config'];
 
                 $notification = new Notification(
-                    $config->get('notification::default_container'),
-                    $config->get('notification::default_types'),
-                    $config->get('notification::default_format'),
-                    $config->get('notification::default_formats')
+                    $config->get('notification.default_container'),
+                    $config->get('notification.default_types'),
+                    $config->get('notification.default_format'),
+                    $config->get('notification.default_formats')
                 );
 
                 $notification->setEventDispatcher($app['events']);
@@ -51,15 +43,5 @@ class NotificationServiceProvider extends ServiceProvider
             });
 
         $this->app['events']->subscribe('Krucas\Notification\Subscriber');
-    }
-
-    /**
-     * Get the services provided by the provider.
-     *
-     * @return array
-     */
-    public function provides()
-    {
-        return array();
     }
 }
