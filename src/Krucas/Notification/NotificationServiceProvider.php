@@ -21,7 +21,7 @@ class NotificationServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app['config']->set('notification', require __DIR__.'/../config/config.php');
+        $this->app['config']->set('notification', require __DIR__.'/../../config/config.php');
 
         $this->app['notification'] = $this->app->share(function ($app) {
                 $config = $app['config'];
